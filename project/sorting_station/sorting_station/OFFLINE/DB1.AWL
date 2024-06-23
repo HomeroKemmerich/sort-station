@@ -8,13 +8,25 @@ VERSION:1.0
 
 
        STRUCT 
-         BTN_PRESSED:BOOL:=FALSE  
-         SENSOR_VALUE:INT:=0  
+         HAS_STARTED:BOOL:=FALSE  
+         SENSOR_READING:INT:=0  
          ON_ROUTE:BOOL:=FALSE  
+         IS_RAW:BOOL:=FALSE  
+         IS_BASE:BOOL:=FALSE  
+         IS_LID:BOOL:=FALSE  
+         RAW_COUNT:INT:=0  
+         BASE_COUNT:INT:=0  
+         LID_COUNT:INT:=0  
        END_STRUCT 
 BEGIN
 
-       BTN_PRESSED:=FALSE
-       SENSOR_VALUE:=0
+       HAS_STARTED:=FALSE
+       SENSOR_READING:=0
        ON_ROUTE:=FALSE
+       IS_RAW:=FALSE
+       IS_BASE:=FALSE
+       IS_LID:=FALSE
+       RAW_COUNT:=0
+       BASE_COUNT:=0
+       LID_COUNT:=0
 END_DATA_BLOCK

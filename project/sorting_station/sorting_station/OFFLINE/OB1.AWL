@@ -27,121 +27,132 @@ NETWORK
 TITLE= 
 //{{k}}
 
-       A    I         0.1
-       S    DB1.BTN_PRESSED
-       R    Q         0.0
+       A    I0.2
+       R    DB1.HAS_STARTED
  
 NETWORK
-TITLE= 
+TITLE=Start button pressed
 //{{k}}
 
-       A    DB1.BTN_PRESSED
-       A(   
-       ON   Q0.3  
-       ON   Q0.5  
-       ON   Q         0.7
-       )  
-       =    Q         0.1
-NETWORK
-TITLE=lEITURA DO SENSOR
-//{{k}}
-
-       L    IW        100
-       T    DB1.SENSOR_VALUE
-       NOP  0
+       A    I0.1
+       S    DB1.HAS_STARTED  
  
 NETWORK
-TITLE=RAW NETWORK
+TITLE=Start setup
 //{{k}}
 
-       AN   DB1.ON_ROUTE
+       A    DB1.HAS_STARTED  
+       =    Q0.2
+       =    Q0.0
+ 
+NETWORK
+TITLE=Sensor reading
+//{{k}}
+
+       L    IW100
+       T    DB1.SENSOR_READING  
+       NOP  0  
+ 
+NETWORK
+TITLE=Raw logic
+//{{k}}
+
        A(  
-       L    DB1.SENSOR_VALUE  
+       L    DB1.SENSOR_READING  
        L    1  
        ==I  
-       )    
-       S    Q         0.3
-       S    Q         0.4
-       S    DB1.ON_ROUTE
-       AN   DB1.ON_ROUTE
+       )  
+       S    DB1.IS_RAW
+       R    DB1.IS_BASE
+       R    DB1.IS_LID
        A(   
-       L    DB1.SENSOR_VALUE  
-       L    4  
+       L    DB1.SENSOR_READING
+       L    4
        ==I  
        )    
-       S    Q         0.3
-       S    Q         0.4
+       S    DB1.IS_RAW
+       R    DB1.IS_BASE
+       R    DB1.IS_LID
 NETWORK
-TITLE=BASE NETWORK
+TITLE=Raw logic
 //{{k}}
 
-       AN   DB1.ON_ROUTE
        A(  
-       L    DB1.SENSOR_VALUE  
-       L    2
+       L    DB1.SENSOR_READING  
+       L    2  
        ==I  
-       )    
-       S    Q         0.5
-       S    Q         0.6
-       S    DB1.ON_ROUTE
-       AN   DB1.ON_ROUTE
+       )  
+       S    DB1.IS_BASE  
+       R    DB1.IS_RAW  
+       R    DB1.IS_LID  
        A(   
-       L    DB1.SENSOR_VALUE  
-       L    5
+       L    DB1.SENSOR_READING  
+       L    5  
        ==I  
        )    
-       S    Q         0.5
-       S    Q         0.6
+       S    DB1.IS_BASE  
+       R    DB1.IS_RAW  
+  
+       R    DB1.IS_LID  
 NETWORK
-TITLE=LID NETWORK
+TITLE=Raw logic
 //{{k}}
 
-       AN   DB1.ON_ROUTE
        A(  
-       L    DB1.SENSOR_VALUE  
+       L    DB1.SENSOR_READING  
        L    3
        ==I  
-       )    
-       S    Q         0.7
-       S    Q         1.1
-       S    DB1.ON_ROUTE
-       AN   DB1.ON_ROUTE
+       )  
+       S    DB1.IS_LID  
+       R    DB1.IS_BASE  
+       R    DB1.IS_RAW  
+  
        A(   
-       L    DB1.SENSOR_VALUE  
+       L    DB1.SENSOR_READING  
        L    6
        ==I  
        )    
+       S    DB1.IS_LID  
+       R    DB1.IS_BASE  
+       R    DB1.IS_RAW  
+NETWORK
+TITLE=
+//{{k}}
+
+       A    DB1.IS_RAW  
+       S    DB1.ON_ROUTE  
+       S    Q         0.3  
+       S    Q         0.4  
+       AN   DB1.IS_RAW
+       R    Q         0.3
+       R    Q         0.4
+NETWORK
+TITLE= 
+//{{k}}
+
+       A    DB1.IS_BASE
+       S    DB1.ON_ROUTE  
+       S    Q         0.5
+       S    Q         0.6
+       AN   DB1.IS_BASE
+       R    Q         0.5
+       R    Q0.6
+NETWORK
+TITLE= 
+//{{k}}
+
+       A    DB1.IS_LID
+       S    DB1.ON_ROUTE  
        S    Q         0.7
        S    Q         1.1
-NETWORK
-TITLE=ON ROUTE
-//{{k}}
-
-       AN   I         0.0
-       R    DB1.ON_ROUTE
-       R    Q         0.3
-       R    Q         0.5
+       AN   DB1.IS_LID
        R    Q         0.7
-       S    Q         0.0
-       R    Q         0.1
+       R    Q1.1
 NETWORK
 TITLE= 
-//{{k}}
+//{{a}}
 
-       A    DB1.ON_ROUTE
-       A(   
-       L    DB1.SENSOR_VALUE
-       L    0
-       ==I  
-       )    
-       S    Q         0.1
-       R    Q         0.0
-NETWORK
-TITLE= 
-//{{k}}
 
-       AN   DB1.ON_ROUTE
-       =    Q         0.0
-  
+
 
 END_ORGANIZATION_BLOCK

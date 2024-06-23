@@ -1,3 +1,137 @@
-     0.0 BTN_PRESSED:=FALSE            
-     2.0 SENSOR_VALUE:=0            
-     4.0 ON_ROUTE:=FALSE            
+//{{V2}}
+ORGANIZATION_BLOCK OB1
+TITLE= "Cyclic main program"
+
+
+AUTHOR:nb
+FAMILY:nb
+NAME:nb
+VERSION:1.0
+
+
+VAR_TEMP
+       OB1_EV_CLASS:BYTE //Bits 0-3 = 1 (Coming event), Bits 4-7 = 1 (Event class 1)
+       OB1_SCAN_1:BYTE //1 (Cold restart scan 1 of OB 1), 3 (Scan 2-n of OB 1)
+       OB1_PRIORITY:BYTE //1 (Priority of 1 is lowest)
+       OB1_OB_NUMBR:BYTE //1 (Organization block 1, OB1)
+       OB1_RESERVED_1:BYTE //Reserved for system
+       OB1_RESERVED_2:BYTE //Reserved for system
+       OB1_PREV_CYCLE:INT //Cycle time of previous OB1 scan (milliseconds)
+       OB1_MIN_CYCLE:INT //Minimum cycle time of OB1 (milliseconds)
+       OB1_MAX_CYCLE:INT //Maximum cycle time of OB1 (milliseconds)
+       OB1_DATE_TIME:DATE_AND_TIME //Date and time OB1 started
+END_VAR
+BEGIN
+
+NETWORK
+TITLE= 
+//{{k}}
+
+       A    I         0.2
+       R    DB1.HAS_STARTED
+ 
+NETWORK
+TITLE=Start button pressed
+//{{k}}
+
+       A    I         0.1  
+       S    DB1.HAS_STARTED  
+ 
+NETWORK
+TITLE=Start setup
+//{{k}}
+
+       A    DB1.HAS_STARTED  
+       =    Q         0.2  
+       =    Q         0.0
+ 
+NETWORK
+TITLE= Not on route
+//{{k}}
+
+       AN   DB1.ON_ROUTE  
+       =    Q         0.0  
+       A    DB1.ON_ROUTE  
+       =    Q0.1  
+NETWORK
+TITLE=Sensor reading
+//{{k}}
+
+       L    IW        100  
+       T    DB1.SENSOR_READING  
+       NOP  0  
+ 
+NETWORK
+TITLE=Raw logic
+//{{k}}
+
+       A(  
+       L    DB1.SENSOR_READING  
+       L    1  
+       ==I  
+       )  
+       S    DB1.IS_RAW
+       R    DB1.IS_BASE
+       R    DB1.IS_LID
+       A(   
+       L    DB1.SENSOR_READING
+       L    4
+       ==I  
+       )    
+       S    DB1.IS_RAW
+       R    DB1.IS_BASE
+       R    DB1.IS_LID
+NETWORK
+TITLE=Raw logic
+//{{k}}
+
+       A(  
+       L    DB1.SENSOR_READING  
+       L    2  
+       ==I  
+       )  
+       S    DB1.IS_BASE  
+       R    DB1.IS_RAW  
+       R    DB1.IS_LID  
+       A(   
+       L    DB1.SENSOR_READING  
+       L    5  
+       ==I  
+       )    
+       S    DB1.IS_BASE  
+       R    DB1.IS_RAW  
+  
+       R    DB1.IS_LID  
+NETWORK
+TITLE=Raw logic
+//{{k}}
+
+       A(  
+       L    DB1.SENSOR_READING  
+       L    3
+       ==I  
+       )  
+       S    DB1.IS_LID  
+       R    DB1.IS_BASE  
+       R    DB1.IS_RAW  
+  
+       A(   
+       L    DB1.SENSOR_READING  
+       L    6
+       ==I  
+       )    
+       S    DB1.IS_LID  
+       R    DB1.IS_BASE  
+       R    DB1.IS_RAW  
+NETWORK
+TITLE=
+//{{k}}
+
+       A    DB1.IS_RAW  
+       S    DB1.ON_ROUTE  
+       S    Q         0.3  
+       S    Q         0.4  
+       AN   DB1.IS_RAW
+       R    Q         0.3
+       R    Q         0.4
+END_ORGANIZATION_BLOCK

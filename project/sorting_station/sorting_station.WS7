@@ -1,3 +1,11 @@
 [PrjV2]
 Kennung=WS7V2
 iAktivesUnterprojekt=0
+bSimulatorAktiv=1
+ExternWeg=0
+LetzteAenderungTicks=237861812
+LetzteAenderungDatum=23.06.2024
+LetzteAenderungUhrzeit=14:32:55
+WinPLC7-Version=V5.036
+[UPrj]
+P0=SORTING_STATION\SORTING_STATION.PRJ
