@@ -1,0 +1,18 @@
+//{{V2}}
+DATA_BLOCK DB2
+
+AUTHOR:mh
+FAMILY:nb
+NAME:nb
+VERSION:1.0
+
+
+       STRUCT 
+         CURRENT_READING:INT:=0  
+         LAST_READING:INT:=0  
+       END_STRUCT 
+BEGIN
+
+       CURRENT_READING:=0
+       LAST_READING:=0
+END_DATA_BLOCK

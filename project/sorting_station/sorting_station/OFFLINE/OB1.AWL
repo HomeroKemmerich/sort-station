@@ -49,36 +49,42 @@ NETWORK
 TITLE=Sensor reading
 //{{k}}
 
-       L    IW100
-       T    DB1.SENSOR_READING  
-       NOP  0  
- 
+       L    DB2.CURRENT_READING
+       T    DB2.LAST_READING
+       SET  
+       SAVE 
+       CLR  
+       A    BR
+       JNB  _001
+       L    IW        100
+       T    DB2.CURRENT_READING
+_001  :NOP  0
 NETWORK
 TITLE=Raw logic
 //{{k}}
 
        A(  
-       L    DB1.SENSOR_READING  
+       L    DB2.CURRENT_READING
        L    1  
        ==I  
        )  
-       S    DB1.IS_RAW
-       R    DB1.IS_BASE
-       R    DB1.IS_LID
+       S    DB1.IS_RAW  
+       R    DB1.IS_BASE  
+       R    DB1.IS_LID  
        A(   
-       L    DB1.SENSOR_READING
-       L    4
+       L    DB2.CURRENT_READING
+       L    4  
        ==I  
        )    
-       S    DB1.IS_RAW
-       R    DB1.IS_BASE
-       R    DB1.IS_LID
+       S    DB1.IS_RAW  
+       R    DB1.IS_BASE  
+       R    DB1.IS_LID  
 NETWORK
 TITLE=Raw logic
 //{{k}}
 
        A(  
-       L    DB1.SENSOR_READING  
+       L    DB2.CURRENT_READING
        L    2  
        ==I  
        )  
@@ -86,7 +92,7 @@ TITLE=Raw logic
        R    DB1.IS_RAW  
        R    DB1.IS_LID  
        A(   
-       L    DB1.SENSOR_READING  
+       L    DB2.CURRENT_READING
        L    5  
        ==I  
        )    
@@ -99,7 +105,7 @@ TITLE=Raw logic
 //{{k}}
 
        A(  
-       L    DB1.SENSOR_READING  
+       L    DB2.CURRENT_READING
        L    3
        ==I  
        )  
@@ -108,7 +114,7 @@ TITLE=Raw logic
        R    DB1.IS_RAW  
   
        A(   
-       L    DB1.SENSOR_READING  
+       L    DB2.CURRENT_READING
        L    6
        ==I  
        )    
@@ -116,7 +122,7 @@ TITLE=Raw logic
        R    DB1.IS_BASE  
        R    DB1.IS_RAW  
 NETWORK
-TITLE=
+TITLE=Raw action
 //{{k}}
 
        A    DB1.IS_RAW  
@@ -127,7 +133,7 @@ TITLE=
        R    Q         0.3
        R    Q         0.4
 NETWORK
-TITLE= 
+TITLE=Base action
 //{{k}}
 
        A    DB1.IS_BASE
@@ -138,7 +144,7 @@ TITLE=
        R    Q         0.5
        R    Q0.6
 NETWORK
-TITLE= 
+TITLE=Lid action
 //{{k}}
 
        A    DB1.IS_LID
@@ -147,12 +153,14 @@ TITLE=
        S    Q         1.1
        AN   DB1.IS_LID
        R    Q         0.7
-       R    Q1.1
+       R    Q         1.1
 NETWORK
 TITLE= 
-//{{a}}
+//{{k}}
 
-
-
-
+       A(
+       L    DB2.CURRENT_READING
+       L ???
+       ==I  
+       )
 END_ORGANIZATION_BLOCK
